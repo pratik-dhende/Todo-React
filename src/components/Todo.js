@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Todo(props) {
     const [isEditing, setEditing] = useState(false);
-    const [newName, setNewName] = useState('');
+    const [priority, setPriority] = useState(props.priority);
 
     function handleChange(e) {
-      setNewName(e.target.value);
+      setPriority(e.target.value);
     }
 
     function handleSubmit(e) {
       e.preventDefault();
-      props.editTask(props.id, newName);
-      setNewName("");
+      props.editTaskPriority(props.id, priority);
+      setPriority(Number(priority));
       setEditing(false);
     }
     
@@ -19,13 +19,13 @@ export default function Todo(props) {
       <form className="stack-small" onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="todo-label" htmlFor={props.id}>
-            New name for {props.name}
+            New priority for {props.name}
           </label>
             <input
               id={props.id}
               className="todo-text"
               type="text"
-              value={newName}
+              value={priority}
               onChange={handleChange}
             />
         </div>
@@ -40,7 +40,7 @@ export default function Todo(props) {
           </button>
           <button type="submit" className="btn btn__primary todo-edit">
             Save
-            <span className="visually-hidden">new name for {props.name}</span>
+            <span className="visually-hidden">new priority for {props.name}</span>
           </button>
         </div>
       </form>
@@ -58,9 +58,23 @@ export default function Todo(props) {
               {props.name}
             </label>
           </div>
+          <div className="c-cb">
+            <input
+              id={props.id}
+              type="checkbox"
+              defaultChecked={props.important}
+              onChange={() => {props.toggleTaskImportant(props.id)}}
+            />
+            <label className="todo-label" htmlFor={props.id}>
+              Important
+            </label>
+          </div>
+          <div className="todo-label">
+            Priority: {props.priority}
+          </div>
           <div className="btn-group">
             <button type="button" className="btn" onClick={() => setEditing(true)}>
-              Edit <span className="visually-hidden">{props.name}</span>
+              Set Priority <span className="visually-hidden">{props.name}</span>
             </button>
             <button
               type="button"

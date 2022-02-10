@@ -2,17 +2,14 @@ import React, { useState } from "react";
 
 function Form(props) {
   const [name, setName] = useState("");
-
-  function handleChange(e) {
-    setName(e.target.value);
-  }
+  const [category, setCategory] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.addTask(name);
+    props.onSubmit(name, category);
     setName("");
+    setCategory("");
   }
-  
   return (
     <form onSubmit={handleSubmit}>
       <h2 className="label-wrapper">
@@ -27,10 +24,24 @@ function Form(props) {
         name="text"
         autoComplete="off"
         value={name}
-        onChange={handleChange}
+        onChange={e => setName(e.target.value)}
+      />
+      <h2 className="label-wrapper">
+        <label htmlFor="new-todo-input" className="label__lg">
+          Category
+        </label>
+      </h2>
+      <input
+        type="text"
+        id="new-todo-input"
+        className="input input__lg"
+        name="text"
+        autoComplete="off"
+        value={category}
+        onChange={e => setCategory(e.target.value)}
       />
       <button type="submit" className="btn btn__primary btn__lg">
-        Add
+        Add Task
       </button>
     </form>
   );
